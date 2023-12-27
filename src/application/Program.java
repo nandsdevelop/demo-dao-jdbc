@@ -8,12 +8,16 @@ import model.entities.Seller;
 
 import java.util.Date;
 
+import static model.dao.DAOFactory.createSellerDAO;
+
 public class Program {
     public static void main(String[] args) {
 
         SellerDAO SellerDAO = DAOFactory.createSellerDAO();
 
-        Seller seller = SellerDAO.findById(3);
+        System.out.println("--- TEST 1: Seller findById ---");
+
+        Seller seller = SellerDAO.findById(5);
 
         System.out.println(seller);
     }
