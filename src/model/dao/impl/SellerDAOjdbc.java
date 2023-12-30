@@ -6,7 +6,6 @@ import model.dao.SellerDAO;
 import model.entities.Department;
 import model.entities.Seller;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +58,25 @@ public class SellerDAOjdbc implements SellerDAO {
 
     @Override
     public void update(Seller obj) {
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "UPDATE seller "
+                            + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                            + "WHERE Id = ?");
 
+            st.setString(1, obj.getName());
+            st.setString(2, obj.getEmail());
+            st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDouble(4, obj.getBaseSalary());
+            st.setInt(5, obj.getDepartment().getId());
+            st.setInt(6, obj.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
@@ -81,7 +98,7 @@ public class SellerDAOjdbc implements SellerDAO {
 
             if (rs.next()) {
 
-                Department dep = instantiateDeparment(rs);
+                Department dep = instantiateDepartment(rs);
 
                 Seller obj = instantiateSeller(rs, dep);
 
@@ -108,7 +125,7 @@ public class SellerDAOjdbc implements SellerDAO {
         return obj;
     }
 
-    private Department instantiateDeparment(ResultSet rs) throws SQLException {
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
         Department dep = new Department();
         dep.setId(rs.getInt("DepartmentId"));
         dep.setName(rs.getString("DepName"));
@@ -136,7 +153,7 @@ public class SellerDAOjdbc implements SellerDAO {
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
                 if (dep == null) {
-                    dep = instantiateDeparment(rs);
+                    dep = instantiateDepartment(rs);
                     map.put(rs.getInt("DepartmentId"), dep);
                 }
 
@@ -179,7 +196,7 @@ public class SellerDAOjdbc implements SellerDAO {
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
                 if (dep == null) {
-                    dep = instantiateDeparment(rs);
+                    dep = instantiateDepartment(rs);
                     map.put(rs.getInt("DepartmentId"), dep);
                 }
 

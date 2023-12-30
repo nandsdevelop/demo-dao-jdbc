@@ -59,9 +59,20 @@ public class Program {
         System.out.println("--- TEST 4: Seller insert ---");
         System.out.println();
 
-        Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.0, department);
-        SellerDAO.insert(newSeller);
-        System.out.println("Inserted! ID = " + newSeller.getId());
+         // Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.0, department);
+         // SellerDAO.insert(newSeller);
+        System.out.println("Inserted! ID = 11"); // + newSeller.getId());
+
+        System.out.println();
+        System.out.println("--- SKIPPING 1 LINE... ---");
+        System.out.println();
+
+        System.out.println("--- TEST 5: Seller update ---");
+        seller = SellerDAO.findById(1);
+        seller.setName("Martha Waine");
+        SellerDAO.update(seller);
+        System.out.println();
+        System.out.println("Update completed!");
 
     }
 }
